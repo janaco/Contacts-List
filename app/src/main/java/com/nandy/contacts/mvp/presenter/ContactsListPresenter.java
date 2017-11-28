@@ -9,6 +9,7 @@ import com.nandy.contacts.adapter.ContactsAdapter;
 import com.nandy.contacts.model.Contact;
 import com.nandy.contacts.mvp.BasePresenter;
 import com.nandy.contacts.mvp.model.ContactsLoadingModel;
+import com.nandy.contacts.mvp.model.PermissionsModel;
 import com.nandy.contacts.mvp.view.ContactsListView;
 
 import java.util.List;
@@ -21,11 +22,16 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
 
     private ContactsListView view;
     private ContactsLoadingModel contactsLoadingModel;
+    private PermissionsModel permissionsModel;
 
     private ContactsAdapter adapter;
 
     public ContactsListPresenter(ContactsListView view) {
         this.view = view;
+    }
+
+    public void setPermissionsModel(PermissionsModel permissionsModel) {
+        this.permissionsModel = permissionsModel;
     }
 
     public void setContactsLoadingModel(ContactsLoadingModel contactsLoadingModel) {
@@ -34,11 +40,22 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
 
     @Override
     public void start() {
-        contactsLoadingModel.initLoader(this);
+
+        if (!permissionsModel.hasPermissionsToReadContacts()) {
+            permissionsModel.requestReadContactsPermission();
+            return;
+        }
+
+        initLoader();
     }
 
     @Override
     public void destroy() {
+
+    }
+
+    private void initLoader() {
+        contactsLoadingModel.initLoader(this);
 
     }
 
@@ -56,5 +73,13 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    public void onRequestPermissionsResult(int requestCode) {
+
+        if (requestCode == PermissionsModel.REQUEST_READ_CONTACTS
+                && permissionsModel.hasPermissionsToReadContacts()) {
+            initLoader();
+        }
     }
 }

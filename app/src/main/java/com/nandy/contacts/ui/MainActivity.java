@@ -1,12 +1,14 @@
 package com.nandy.contacts.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.nandy.contacts.R;
 import com.nandy.contacts.mvp.model.ContactsLoadingModel;
+import com.nandy.contacts.mvp.model.PermissionsModel;
 import com.nandy.contacts.mvp.presenter.ContactsListPresenter;
 import com.nandy.contacts.mvp.view.ContactsListView;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
 
         ContactsListPresenter presenter = new ContactsListPresenter(this);
         presenter.setContactsLoadingModel(new ContactsLoadingModel(this));
+        presenter.setPermissionsModel(new PermissionsModel(this));
         setPresenter(presenter);
     }
 
@@ -43,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
     protected void onStop() {
         super.onStop();
         presenter.destroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        presenter.onRequestPermissionsResult(requestCode);
     }
 
     @Override
