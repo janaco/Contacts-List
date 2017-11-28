@@ -1,11 +1,15 @@
 package com.nandy.contacts.adapter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nandy.contacts.ContactImageLoader;
 import com.nandy.contacts.R;
 import com.nandy.contacts.model.Contact;
 
@@ -38,6 +42,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         Contact contact = contacts.get(position);
 
         holder.setName(contact.getName());
+        holder.setPhoto(ContactImageLoader.getContactImage(holder.context.getContentResolver(), contact));
 
     }
 
@@ -48,17 +53,28 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.textView)
+        @BindView(R.id.name)
         TextView nameView;
+        @BindView(R.id.photo)
+        ImageView photoView;
+
+        Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            context  = itemView.getContext();
+
             ButterKnife.bind(this, itemView);
         }
 
         void setName(String name){
             nameView.setText(name);
         }
+
+        void setPhoto(Bitmap photo){
+            photoView.setImageBitmap(photo);
+        }
+
     }
 
 }

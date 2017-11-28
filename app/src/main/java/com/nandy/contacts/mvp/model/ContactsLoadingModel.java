@@ -2,7 +2,7 @@ package com.nandy.contacts.mvp.model;
 
 import android.app.Activity;
 import android.app.LoaderManager;
-import android.content.Context;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
@@ -22,13 +22,19 @@ public class ContactsLoadingModel {
 
     private static final int CONTACTS_LOADER_ID = 1;
 
+    private final static String[] FROM_COLUMNS = {
+            ContactsContract.Contacts._ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.PHOTO_URI
+    };
+
     private Activity activity;
 
-    public ContactsLoadingModel(Activity activity){
+    public ContactsLoadingModel(Activity activity) {
         this.activity = activity;
     }
 
-    public void initLoader(LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks){
+    public void initLoader(LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks) {
         activity.getLoaderManager().initLoader(CONTACTS_LOADER_ID, null, loaderCallbacks);
     }
 
@@ -39,27 +45,31 @@ public class ContactsLoadingModel {
         return null;
     }
 
-    public List<Contact> parseContactsCursor(Cursor cursor){
+    public List<Contact> parseContactsCursor(Cursor cursor) {
         List<Contact> contacts = new ArrayList<>();
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
 
             do {
+                long id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                contacts.add(new Contact(name));
+
+                Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
+                Uri photoUri = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+
+                contacts.add(new Contact(id, name, photoUri));
             } while (cursor.moveToNext());
         }
 
-        return contacts;    }
+        return contacts;
+    }
 
 
     private Loader<Cursor> contactsLoader() {
         Uri contactsUri = ContactsContract.Contacts.CONTENT_URI;
 
-        String[] projection = {
-                ContactsContract.Contacts.DISPLAY_NAME
-        };
+
 
         String selection = null;
         String[] selectionArgs = {};
@@ -68,10 +78,12 @@ public class ContactsLoadingModel {
         return new CursorLoader(
                 activity,
                 contactsUri,
-                projection,
+                FROM_COLUMNS,
                 selection,
                 selectionArgs,
                 sortOrder);
+
+
     }
 
 

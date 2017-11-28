@@ -9,10 +9,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.nandy.contacts.R;
 import com.nandy.contacts.adapter.ContactsAdapter;
-import com.nandy.contacts.model.Contact;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,12 +41,5 @@ public class ContactActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        List<Contact> contacts = new ArrayList<>();
-        for (int i = 1; i < 30; i++) {
-            contacts.add(new Contact("Person " + i));
-        }
-
-        adapter = new ContactsAdapter(contacts);
-        recyclerView.setAdapter(adapter);
     }
 }
