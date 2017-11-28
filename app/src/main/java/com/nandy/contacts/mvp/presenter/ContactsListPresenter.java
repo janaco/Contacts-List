@@ -5,6 +5,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import com.nandy.contacts.R;
 import com.nandy.contacts.adapter.ContactsAdapter;
 import com.nandy.contacts.model.Contact;
 import com.nandy.contacts.mvp.BasePresenter;
@@ -42,6 +43,8 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
     public void start() {
 
         if (!permissionsModel.hasPermissionsToReadContacts()) {
+            view.setErrorMessage(R.string.no_permissions);
+            view.setErrorMessageVisible(true);
             permissionsModel.requestReadContactsPermission();
             return;
         }
@@ -55,6 +58,10 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
     }
 
     private void initLoader() {
+
+        view.setErrorMessageVisible(false);
+        view.setLoadingProgressEnabled(true);
+
         contactsLoadingModel.initLoader(this);
 
     }
@@ -69,6 +76,7 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
         List<Contact> contacts = contactsLoadingModel.parseContactsCursor(cursor);
         adapter = new ContactsAdapter(contacts);
         view.setContactsAdapter(adapter);
+        view.setLoadingProgressEnabled(false);
     }
 
     @Override

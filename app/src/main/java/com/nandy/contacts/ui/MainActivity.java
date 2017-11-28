@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.nandy.contacts.R;
 import com.nandy.contacts.mvp.model.ContactsLoadingModel;
@@ -20,6 +23,10 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
 
     @BindView(R.id.contacts_list)
     RecyclerView contactsList;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.alert_message)
+    TextView alertMessageView;
 
     private ContactsListPresenter presenter;
 
@@ -64,5 +71,18 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
         contactsList.setAdapter(adapter);
     }
 
+    @Override
+    public void setErrorMessage(int resId) {
+        alertMessageView.setText(resId);
+    }
 
+    @Override
+    public void setErrorMessageVisible(boolean visible) {
+        alertMessageView.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void setLoadingProgressEnabled(boolean enabled) {
+        progressBar.setVisibility(enabled ? View.VISIBLE : View.GONE);
+    }
 }
