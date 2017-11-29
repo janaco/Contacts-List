@@ -2,4 +2,5 @@
     <string name="app_name">Contacts</string>
 
     <string name="no_permissions">No permissions to read contacts.</string>
+    <string name="unknown">Unknown</string>
 </resources>

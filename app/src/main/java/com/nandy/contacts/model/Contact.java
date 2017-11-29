@@ -1,23 +1,23 @@
 package com.nandy.contacts.model;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.support.annotation.NonNull;
 
 /**
  * Created by yana on 28.11.17.
  */
 
 
-public class Contact {
+public class Contact implements Comparable<Contact>{
 
-    public long id;
-    public String name;
-    public Uri photoURI;
+    private long id;
+    private String name;
+    private Bitmap photoBitmap;
 
-    public Contact(long id, String name, Uri photoURI) {
+    public Contact(long id, String name, Bitmap photoBitmap) {
         this.id = id;
         this.name = name;
-        this.photoURI = photoURI;
+        this.photoBitmap = photoBitmap;
     }
 
     public long getId() {
@@ -36,12 +36,13 @@ public class Contact {
         this.name = name;
     }
 
-
-    public Uri getPhotoURI() {
-        return photoURI;
+    public Bitmap getPhotoBitmap() {
+        return photoBitmap;
     }
 
-    public void setPhotoURI(Uri photoURI) {
-        this.photoURI = photoURI;
+
+    @Override
+    public int compareTo(@NonNull Contact contact) {
+        return name.compareTo(contact.getName());
     }
 }

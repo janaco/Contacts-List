@@ -1,16 +1,21 @@
 package com.nandy.contacts.ui;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nandy.contacts.R;
 import com.nandy.contacts.mvp.model.ContactsLoadingModel;
+import com.nandy.contacts.mvp.model.NavigationModel;
 import com.nandy.contacts.mvp.model.PermissionsModel;
 import com.nandy.contacts.mvp.presenter.ContactsListPresenter;
 import com.nandy.contacts.mvp.view.ContactsListView;
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
     ProgressBar progressBar;
     @BindView(R.id.alert_message)
     TextView alertMessageView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private ContactsListPresenter presenter;
 
@@ -35,11 +42,15 @@ public class MainActivity extends AppCompatActivity implements ContactsListView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+
         contactsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         ContactsListPresenter presenter = new ContactsListPresenter(this);
         presenter.setContactsLoadingModel(new ContactsLoadingModel(this));
         presenter.setPermissionsModel(new PermissionsModel(this));
+        presenter.setNavigationModel(new NavigationModel(this));
         setPresenter(presenter);
     }
 
