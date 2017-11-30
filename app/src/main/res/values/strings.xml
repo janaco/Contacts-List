@@ -3,4 +3,7 @@
 
     <string name="no_permissions">No permissions to read contacts.</string>
     <string name="unknown">Unknown</string>
+    <string name="no_phone_numbers">No phone numbers</string>
+    <string name="no_emails">No email addresses</string>
+    <string name="no_addresses">No postal addresses</string>
 </resources>

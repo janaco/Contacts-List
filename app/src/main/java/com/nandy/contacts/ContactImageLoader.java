@@ -19,10 +19,10 @@ import java.io.InputStream;
 public class ContactImageLoader {
 
     @Nullable
-    public static Bitmap getContactImage(ContentResolver contentResolver, long id) {
+    public static Bitmap getContactImage(ContentResolver contentResolver, long id, boolean hightQuality) {
 
-        InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver,
-                ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id));
+        Uri uri =  ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
+        InputStream inputStream = ContactsContract.Contacts.openContactPhotoInputStream(contentResolver, uri, hightQuality);
 
         if (inputStream != null) {
             return BitmapFactory.decodeStream(inputStream);
@@ -30,4 +30,6 @@ public class ContactImageLoader {
 
         return null;
     }
+
+
 }

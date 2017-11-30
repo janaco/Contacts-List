@@ -22,6 +22,7 @@ import java.util.List;
 
 public class ContactsLoadingModel {
 
+
     private static final int CONTACTS_LOADER_ID = 1;
 
     private final static String[] FROM_COLUMNS = {
@@ -69,7 +70,7 @@ public class ContactsLoadingModel {
     }
 
     private Bitmap getContactPhoto(long id, String name) {
-        Bitmap bitmap = ContactImageLoader.getContactImage(activity.getContentResolver(), id);
+        Bitmap bitmap = ContactImageLoader.getContactImage(activity.getContentResolver(), id, false);
         if (bitmap == null) {
             bitmap = BitmapUtils.drawTextToBitmap(activity, getNameInitials(name));
         } else {

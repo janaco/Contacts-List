@@ -63,7 +63,7 @@ public class ContactsListPresenter implements BasePresenter, LoaderManager.Loade
     }
 
     @Override
-    public void destroy() {
+    public void stop() {
 
     }
 
