@@ -49,6 +49,12 @@ public class ContactDetailsModel {
         loaderManager.initLoader(id, null, loaderCallbacks);
     }
 
+
+
+    public void destroyLoader(int id) {
+        loaderManager.destroyLoader(id);
+    }
+
     public Loader<Cursor> createLoader(int id) {
 
         switch (id) {

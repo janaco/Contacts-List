@@ -34,19 +34,19 @@ public class ContactDetailsPresenter implements BasePresenter, LoaderManager.Loa
 
     @Override
     public void start() {
-        initLoaders();
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    private void initLoaders() {
         detailsModel.initLoader(ContactDetailsModel.CONTACT_LOADER_ID, this);
         detailsModel.initLoader(ContactDetailsModel.PHONES_LOADER_ID, this);
         detailsModel.initLoader(ContactDetailsModel.EMAILS_LOADER_ID, this);
         detailsModel.initLoader(ContactDetailsModel.ADDRESSES_LOADER_ID, this);
+    }
+
+    @Override
+    public void stop() {
+        detailsModel.destroyLoader(ContactDetailsModel.CONTACT_LOADER_ID);
+        detailsModel.destroyLoader(ContactDetailsModel.PHONES_LOADER_ID);
+        detailsModel.destroyLoader(ContactDetailsModel.EMAILS_LOADER_ID);
+        detailsModel.destroyLoader(ContactDetailsModel.ADDRESSES_LOADER_ID);
+        view.unbindViews();
     }
 
     @Override

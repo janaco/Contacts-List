@@ -25,4 +25,6 @@ public interface ContactDetailsView extends BaseView<ContactDetailsPresenter>{
     void setName(String name);
 
     void setPhoto(Bitmap bitmap);
+
+    void unbindViews();
 }

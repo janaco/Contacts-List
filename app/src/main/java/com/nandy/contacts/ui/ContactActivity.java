@@ -3,14 +3,19 @@ package com.nandy.contacts.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nandy.contacts.R;
 import com.nandy.contacts.model.Address;
@@ -50,12 +55,46 @@ public class ContactActivity extends AppCompatActivity implements ContactDetails
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         String id = String.valueOf(getIntent().getLongExtra("id", -1));
         ContactDetailsPresenter presenter = new ContactDetailsPresenter(this);
         presenter.setDetailsModel(new ContactDetailsModel(getApplicationContext(), getLoaderManager(), id));
         setPresenter(presenter);
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.contact_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+            case R.id.action_remove:
+                Toast.makeText(getApplicationContext(), getString(R.string.not_implemented), Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
@@ -156,6 +195,11 @@ public class ContactActivity extends AppCompatActivity implements ContactDetails
         int childCount = layoutContent.getChildCount();
         int position = childCount == 2 ? 2 : childCount - 1;
         layoutContent.addView(viewGroup, position);
+    }
+
+    @Override
+    public void unbindViews() {
+        layoutContent.removeAllViews();
     }
 
     @Override

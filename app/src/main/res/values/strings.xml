@@ -6,4 +6,7 @@
     <string name="no_phone_numbers">No phone numbers</string>
     <string name="no_emails">No email addresses</string>
     <string name="no_addresses">No postal addresses</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="not_implemented">Not implemented</string>
 </resources>
